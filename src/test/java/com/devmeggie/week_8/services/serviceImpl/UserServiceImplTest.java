@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.BeanUtils;
+import org.springframework.validation.annotation.Validated;
 
 import javax.servlet.http.HttpSession;
 
@@ -63,9 +64,16 @@ class UserServiceImplTest {
     }
 
 
-    @Disabled
+
     @Test
     void deleteUser() {
+        String result = testUserServiceImpl.deleteUser();
+        String expected ="user not found";
+        Assertions.assertEquals(expected,result);
+
+
+
+
 
 
     }

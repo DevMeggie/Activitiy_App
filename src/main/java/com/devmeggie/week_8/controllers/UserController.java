@@ -29,10 +29,10 @@ public class UserController {
 
     @PostMapping("/logIn")
     public User logIn(@Validated @RequestBody UserLoginDto userLoginDto) {
-//        User user = userService.login(userLoginDto.getEmail(), userLoginDto.getPassword());
-//        httpSession.setAttribute("user_id", user.getId());
-//        return "login successfully";
-     return    userService.login(userLoginDto);
+       User user = userService.login(userLoginDto);
+        httpSession.setAttribute("user_id", user.getId());
+
+     return user;
     }
 
 

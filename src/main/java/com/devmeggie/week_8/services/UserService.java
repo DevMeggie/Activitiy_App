@@ -9,7 +9,7 @@ public interface UserService {
 
     User login(UserLoginDto userLoginDto);
 
-    void deleteUser();
+    String deleteUser();
 
 
 }

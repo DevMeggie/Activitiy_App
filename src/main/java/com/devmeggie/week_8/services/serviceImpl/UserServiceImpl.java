@@ -8,7 +8,6 @@ import com.devmeggie.week_8.models.User;
 import com.devmeggie.week_8.repositories.TaskRepo;
 import com.devmeggie.week_8.repositories.UserRepo;
 import com.devmeggie.week_8.services.UserService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
@@ -51,13 +50,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser() {
+    public String deleteUser() {
       Long user_id = (Long) httpSession.getAttribute("user_id");
         boolean exists= userRepo.existsById(user_id);
         if(!exists){
             throw new NotFoundException("user not found");
         }
         userRepo.deleteById(user_id);
+        return "userLogged out";
     }
 
     }
