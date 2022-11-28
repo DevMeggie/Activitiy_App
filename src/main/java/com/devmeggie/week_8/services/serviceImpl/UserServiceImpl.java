@@ -11,6 +11,7 @@ import com.devmeggie.week_8.services.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -35,7 +36,9 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userSignUpDto.getEmail());
         user.setGender(userSignUpDto.getGender());
         user.setPassword(userSignUpDto.getPassword());
-        return userRepo.save(user);
+        user.setTaskList(new ArrayList<>());
+        userRepo.save(user);
+        return user;
     }
 
     @Override

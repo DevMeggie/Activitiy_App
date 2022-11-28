@@ -57,6 +57,11 @@ public class TaskServiceImpl implements TaskService {
 
         Optional<Task> taskOptional = taskRepo.findById(task_id);
         Task task = taskOptional.orElseThrow(() -> new TaskDoesntExistException("Task does not exist"));
+
+        boolean isTaskOwner = task.getUserId().equals(user_id);
+
+        if(!isTaskOwner) throw new TaskDoesntExistException("Task does not exist");
+
         return TaskViewDto.builder()
                 .taskId(task.getId())
                 .userId(task.getUserId())
@@ -72,7 +77,7 @@ public class TaskServiceImpl implements TaskService {
         userRepo.findById(user_id)
                 .orElseThrow(() -> new NotFoundException("sorry! user not found"));
 
-        return taskRepo.findAllByStatus(TaskStatus.PENDING);
+        return taskRepo.findAllByStatus(user_id, TaskStatus.PENDING);
 
 
     }
@@ -83,12 +88,12 @@ public class TaskServiceImpl implements TaskService {
         userRepo.findById(user_id)
                 .orElseThrow(() -> new NotFoundException("sorry! user not found"));
 
-        return taskRepo.findAllByStatus(TaskStatus.COMPLETED);
+        return taskRepo.findAllByStatus(user_id, TaskStatus.COMPLETED);
     }
 
     @Override
     public Task updateTaskById(Long taskId, TaskCreatedDto taskCreatedDto) {
-        Long user_icd = (Long) httpSession.getAttribute("user_id");
+        Long Id = (Long) httpSession.getAttribute("user_id");
         Optional<Task> taskOptional = taskRepo.findById(taskId);
 
         Task oldTask = taskOptional.orElseThrow(() ->
@@ -131,7 +136,7 @@ public class TaskServiceImpl implements TaskService {
 
         userRepo.findById(user_id).orElseThrow(() -> new NotFoundException("sorry user not found"));
 
-        return taskRepo.findAllByStatus(TaskStatus.IN_PROGRESS);
+        return taskRepo.findAllByStatus(user_id, TaskStatus.IN_PROGRESS);
     }
 }
 

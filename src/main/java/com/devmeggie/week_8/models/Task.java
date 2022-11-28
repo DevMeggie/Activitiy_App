@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Builder
+@ToString
 public class Task extends BaseClass{
     @Column(nullable = false, length = 50)
     private String title;

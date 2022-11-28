@@ -15,7 +15,9 @@ public interface TaskRepo extends JpaRepository<Task,Long> {
     List <Task> findByUserId(Long user_Id);
 
 
-    List<Task> findAllByStatus(TaskStatus status);
+    @Query(value = "SELECT * FROM task WHERE user_id=? AND status=?", nativeQuery = true)
+    List<Task> findAllByStatus(Long user_id, TaskStatus status);
 
 
+    Object findById();
 }
