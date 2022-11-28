@@ -2,6 +2,7 @@ package com.devmeggie.week_8.services.serviceImpl;
 
 import com.devmeggie.week_8.dtos.TaskCreatedDto;
 import com.devmeggie.week_8.enums.TaskStatus;
+import com.devmeggie.week_8.exceptions.NotFoundException;
 import com.devmeggie.week_8.models.Task;
 import com.devmeggie.week_8.models.User;
 import com.devmeggie.week_8.repositories.TaskRepo;
@@ -15,6 +16,7 @@ import org.mockito.MockitoAnnotations;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -66,20 +68,26 @@ public class TaskServiceImplTest {
     }
     @Test
     void shouldThrowNotFoundException(){
-        when(testTaskRepo.findById(2L));
+        when(userRepo.findById(anyLong())).thenReturn(Optional.of(user));
+        Assertions.assertThrows(NotFoundException.class,()->testTaskServiceImpl.CreateTask(taskCreatedDto));
     }
-
-
+    
     @Test
     void viewAllTask() {
         httpSession.setAttribute("user_id", 2L);
         when((Long) httpSession.getAttribute("user_id")).thenReturn(2L);
-        when(userRepo.findById(2L)).thenReturn(Optional.of(user));
-        when(testTaskRepo.findById(anyLong())).thenReturn(Optional.of(task2));
-        Task result = (Task) testTaskServiceImpl.viewAllTask();
-
+        when(userRepo.findById(anyLong())).thenReturn(Optional.of(user));
+        when(testTaskRepo.findByUserId(anyLong())).thenReturn(List.of(task2));
+        List<Task>tasks = testTaskServiceImpl.viewAllTask();
+        Assertions.assertEquals(List.of(task2),tasks);
    }
-}
+   @Test
+    void ShouldThrowNotFoundException(){
+           when(userRepo.findById(anyLong())).thenReturn(Optional.of(user));
+           Assertions.assertThrows(NotFoundException.class,()->testTaskServiceImpl.CreateTask(taskCreatedDto));
+       }
+   }
+
 
 //}
 //
